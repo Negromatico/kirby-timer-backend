@@ -44,7 +44,7 @@ app.post("/create-order", async (req, res) => {
   }
 });
 
-app.post("/capture-order", async (req, res) => {
+app.post("/add-time", async (req, res) => {
   const { orderID } = req.body;
   const request = new paypal.orders.OrdersCaptureRequest(orderID);
   request.requestBody({});

@@ -20,20 +20,24 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 // Store user time in-memory
 let userTime = 0; // in seconds
 
-app.post("/create-order", async (req, res) => {
-  const request = new paypal.orders.OrdersCreateRequest();
-  request.prefer("return=representation");
-  request.requestBody({
-    intent: "CAPTURE",
-    purchase_units: [
-      {
-        amount: {
-          currency_code: "USD",
-          value: "1.00"
-        }
-      }
-    ]
-  });
+app.post("/capture-order", async (req, res) => {
+  const { orderID } = req.body;
+  try {
+    const request = new paypal.orders.OrdersCaptureRequest(orderID);
+    request.requestBody({});
+
+    const capture = await client.execute(request);
+
+    // Agrega tiempo fijo: 60 segundos por ejemplo
+    userTime += 60;
+
+    res.json({ success: true, addedSeconds: 60 });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.toString() });
+  }
+});
+
 
   try {
     const order = await paypalClient.execute(request);

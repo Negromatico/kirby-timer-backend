@@ -56,7 +56,7 @@ app.post("/add-time", async (req, res) => {
   try {
     const capture = await paypalClient.execute(request);
 
-    // Add time to user (e.g., 60 seconds per $1)
+    // Add time to user (e.g., 60 seconds per $15)
     userTime += 60;
     res.json({ status: "success", addedTime: 60, totalTime: userTime });
   } catch (err) {
